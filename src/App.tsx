@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
-import { Accordion, Container, ListGroup } from 'react-bootstrap';
+import { Badge, Button, Container, Stack } from 'react-bootstrap';
+import WeeklySummaryAccordion from './WeeklySummaryAccordion';
 
 type FetchMuscleGroupData = () => Promise<WeeklyMuscleGroupSummary[]>;
 
-type WeeklyMuscleGroupSummary = {
+export type WeeklyMuscleGroupSummary = {
   startDate: string,
   endDate: string,
   workouts: number,
   muscleGroups: MuscleGroup[]
 }
 
-type MuscleGroup = {
+export type MuscleGroup = {
   muscleGroup: string,
+  muscleGroupRegion: string,
   calculatedSets: number,
   primarySets: number,
   secondarySets: number
@@ -31,24 +33,9 @@ const fetchMuscleGroupData: FetchMuscleGroupData = async() => {
   }
 }
 
-const formatMuscleGroupTitle = (muscleGroupTitle: string) => {
-  if (muscleGroupTitle.length == 0) return;
-  if (muscleGroupTitle.length == 1) return muscleGroupTitle.toLocaleUpperCase();
-
-  const words = muscleGroupTitle.split('_');
-  const capitalisedWords = words.map(w => {
-    if (w.length == 0) return "";
-    if (w.length == 1) return w.toLocaleUpperCase();
-
-    const firstLetter = w.charAt(0);
-    return firstLetter.toLocaleUpperCase() + w.substring(1);
-  });
-  
-  return capitalisedWords.join(' ');
-}
-
 function App() {
   const [muscleGroupData, setMuscleGroupData] = useState<WeeklyMuscleGroupSummary[]>([]);
+  const [filteredMuscleRegion, setFilteredMuscleRegion] = useState<string | undefined>();
 
   useEffect(() => {
     async function fetchData() {
@@ -59,43 +46,47 @@ function App() {
     fetchData();
   }, [])
 
-  useEffect(() => {
-    console.log(muscleGroupData);
-  }, [muscleGroupData])
-
   return (
-    <Container className="pt-4">
-      {muscleGroupData.length > 0 
-        && 
-        (
-          <Accordion>
-          {muscleGroupData.map((mg, i) => 
-            (
-              <Accordion.Item eventKey={i.toString()}>
-                <Accordion.Header>
-                  <div>{mg.startDate} - {mg.endDate}</div> 
-                  <div style={{fontWeight: "200"}} className="float-end">({mg.workouts} workouts)</div>
-                </Accordion.Header>
-                <Accordion.Body>
-                    <ListGroup as="ol" numbered>
-                      {mg.muscleGroups.length > 0 
-                        && mg.muscleGroups.map(muscle => (
-                          <ListGroup.Item as="li" className="pb-3"> 
-                            {formatMuscleGroupTitle(muscle.muscleGroup)}
-                              <div className="ps-4 pt-2">
-                                <span>{muscle.calculatedSets} calculated sets </span>
-                                | <span>{muscle.primarySets} primary sets </span>
-                                | <span>{muscle.secondarySets} secondary sets</span>
-                              </div>
-                          </ListGroup.Item>
-                        ))}
-                    </ListGroup>
-                </Accordion.Body>
-              </Accordion.Item>
-            ))}
-          </Accordion>
-        )
-        }
+    <Container fluid="md" className="mt-3">
+      <h2 className="text-center mb-3 mt-4">Hevy Summary - Sets Per Muscle Group Per Week</h2>
+      <p>
+        The following data is taken from the <a href="https://api.hevyapp.com/docs/">Hevy API</a>, and 
+        aggregates sets into muscle groups, divided into weeks (Mon - Sun). Warmup sets are excluded,
+        and exercises that have secondary muscle groups will contribute to half a set for the combined/calculated 
+        total sets. The split primary/secondary counts are also included. By default, the last 4 weeks (including
+        the current week) is included.
+      </p>
+
+      <Stack direction="horizontal" gap={2} className="mb-3">
+        <Button style={{float: "right"}} variant="dark" onClick={() => setFilteredMuscleRegion(undefined)}>
+          All / No Filter
+        </Button>
+        <Button variant="outline-primary" onClick={() => setFilteredMuscleRegion("legs")}>
+          Legs
+        </Button>
+        <Button variant="outline-secondary" onClick={() => setFilteredMuscleRegion("chest")}>
+          Chest
+        </Button>
+        <Button variant="outline-success" onClick={() => setFilteredMuscleRegion("shoulders")}>
+          Shoulders
+        </Button>
+        <Button variant="outline-danger" onClick={() => setFilteredMuscleRegion("back")}>
+          Back
+        </Button>
+        <Button variant="outline-warning" onClick={() => setFilteredMuscleRegion("abdominals")}>
+          Core
+        </Button>
+        <Button variant="outline-dark" onClick={() => setFilteredMuscleRegion("arms")}>
+          Arms
+        </Button>
+      </Stack>
+
+      {muscleGroupData.length > 0 && 
+        <WeeklySummaryAccordion 
+          muscleGroupData={muscleGroupData} 
+          onlyShowMuscle={filteredMuscleRegion} />
+      }
+
     </Container>
   )
 }
