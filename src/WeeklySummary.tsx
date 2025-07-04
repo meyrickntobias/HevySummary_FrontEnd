@@ -37,7 +37,7 @@ const WeeklySummary = ({muscleGroups, onlyShowMuscle} : WeeklySummaryProps) => {
     }, [onlyShowMuscle])
 
     return (
-        <ListGroup as="ol" numbered>
+        <ListGroup as="ol" numbered style={{backgroundColor: "red"}}>
             {muscleGroups.length > 0 
             && filteredMuscleGroups.map(muscle => (
                 <ListGroup.Item as="li" className="pb-1 rounded-0" style={{fontSize: "0.9rem"}}> 

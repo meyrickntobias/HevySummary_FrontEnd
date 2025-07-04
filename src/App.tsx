@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Badge, Button, Container, Stack } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import WeeklySummaryAccordion from './WeeklySummaryAccordion';
+import MuscleGroupPicker from './MuscleGroupPicker';
 
 type FetchMuscleGroupData = () => Promise<WeeklyMuscleGroupSummary[]>;
 
@@ -57,29 +58,7 @@ function App() {
         the current week) is included.
       </p>
 
-      <Stack direction="horizontal" gap={2} className="mb-3">
-        <Button style={{float: "right"}} variant="dark" onClick={() => setFilteredMuscleRegion(undefined)}>
-          All / No Filter
-        </Button>
-        <Button variant="outline-primary" onClick={() => setFilteredMuscleRegion("legs")}>
-          Legs
-        </Button>
-        <Button variant="outline-secondary" onClick={() => setFilteredMuscleRegion("chest")}>
-          Chest
-        </Button>
-        <Button variant="outline-success" onClick={() => setFilteredMuscleRegion("shoulders")}>
-          Shoulders
-        </Button>
-        <Button variant="outline-danger" onClick={() => setFilteredMuscleRegion("back")}>
-          Back
-        </Button>
-        <Button variant="outline-warning" onClick={() => setFilteredMuscleRegion("abdominals")}>
-          Core
-        </Button>
-        <Button variant="outline-dark" onClick={() => setFilteredMuscleRegion("arms")}>
-          Arms
-        </Button>
-      </Stack>
+      <MuscleGroupPicker setFilteredMuscleRegion={setFilteredMuscleRegion} />
 
       {muscleGroupData.length > 0 && 
         <WeeklySummaryAccordion 
