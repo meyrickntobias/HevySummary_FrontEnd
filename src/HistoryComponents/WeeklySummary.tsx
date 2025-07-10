@@ -1,6 +1,6 @@
 import { ListGroup } from "react-bootstrap"
-import type { MuscleGroup } from "./App";
 import { useEffect, useState } from "react";
+import type { MuscleGroup } from "../Routes/WorkoutHistory";
 
 type WeeklySummaryProps = {
     muscleGroups: MuscleGroup[];
