@@ -1,4 +1,4 @@
-import type { Routine } from "../Routes/PlanRoutine";
+import type { Routine } from "../Reducers/SavedWorkoutPlanReducer";
 
 type fetchRoutines = () => Promise<Routine[]>;
 

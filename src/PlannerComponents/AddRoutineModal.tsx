@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Modal } from "react-bootstrap";
-import { RoutineActionType, type DayOfWeek, type Routine, type RoutineAction } from "../Routes/PlanRoutine";
+import { Badge, Button, Card, CloseButton, Modal, Table } from "react-bootstrap";
 import { fetchRoutines } from "../Api/FetchRoutines";
-import { formatDateWithDayAndMon } from "../Helpers/DateHelper";
+import { formatDateWithMonAndYear } from "../Helpers/DateHelper";
+import { WorkoutActionType, type DayOfWeek, type Routine, type SavedWorkoutAction } from "../Reducers/SavedWorkoutPlanReducer";
 
 type AddRoutineModalProps = {
     isOpen: boolean;
     onHide: () => void;
     currentDay: DayOfWeek;
-    routineDispatcher: React.ActionDispatch<[action: RoutineAction]>
+    savedWorkoutDispatch: React.ActionDispatch<[action: SavedWorkoutAction]>
 }
 
-const AddRoutineModal = ({isOpen, onHide, currentDay, routineDispatcher}: AddRoutineModalProps) => {
+const AddRoutineModal = ({isOpen, onHide, currentDay, savedWorkoutDispatch}: AddRoutineModalProps) => {
     const [routines, setRoutines] = useState<Routine[]>([]);
 
     useEffect(() => {
@@ -32,31 +32,50 @@ const AddRoutineModal = ({isOpen, onHide, currentDay, routineDispatcher}: AddRou
         >
             <Modal.Body>
                 <h4>Routines</h4>
-                {/* <Form>
-                    <Form.Control 
-                        type="text"
-                    />
-                </Form> */}
+                <CloseButton
+                    onClick={() => onHide()}
+                    style={{position: "absolute", top: "5px", right: "5px"}} 
+                />
                 <div>
-                    {routines.map(routine => (
+                    {routines && routines.map(routine => (
                         <Card className="mt-3">
                             <Card.Body>
-                                <h6>{routine.title}</h6>
-                                <p className="mb-2" style={{fontWeight: "200", fontSize: "0.8rem"}}>Created - {formatDateWithDayAndMon(routine.createdAt)}</p>
-                                <ul>
-                                {routine.exercises.map(exercise => (
-                                    <li>{exercise.title} | {exercise.sets.length} sets</li>
-                                ))}
-                                </ul>
-                                <Button variant="outline-primary" onClick={() => routineDispatcher({ type: RoutineActionType.ADD, payload: {day: currentDay, routine: routine}})}>Add To Plan</Button>
+                                <h5>{routine.title}</h5>
+                                <p className="mb-3" style={{fontWeight: "200", fontSize: "0.8rem"}}>Created - {formatDateWithMonAndYear(routine.createdAt)}</p>
+                                <Table>
+                                    <colgroup>
+                                        <col style={{ width: "auto" }} />
+                                        <col style={{ width: "70px"}} />
+                                    </colgroup>
+                                    <tbody>
+                                    {routine.exercises.map(exercise => (
+                                         <tr className="mb-3 rounded-0">
+                                            <td>
+                                                {exercise.title + " "}
+        
+                                                <Badge pill bg="primary" className="ms-2 me-1">{exercise.primaryMuscleGroup}</Badge>
+                                                    {exercise.secondaryMuscleGroups.length > 0 && (
+                                                        exercise.secondaryMuscleGroups.map((mg) => (
+                                                            <Badge pill bg="secondary" className="me-1">
+                                                                {mg}
+                                                            </Badge>
+                                                    ))
+                                                )}
+                                            </td>
+                                            <td>
+                                                {exercise.sets.length} sets
+                                            </td>
+                                        </tr>
+                                    ))}
+                                       
+                                    </tbody>
+                                </Table>
+                                <Button variant="outline-primary" onClick={() => savedWorkoutDispatch({ type: WorkoutActionType.ADD_ROUTINE, payload: {day: currentDay, item: routine}})}>Add To Plan</Button>
                             </Card.Body>
                         </Card>
                     ))}
                 </div>
             </Modal.Body>
-            <Modal.Footer>
-                <Button variant="danger">Close</Button>
-            </Modal.Footer>
         </Modal>
     )
 }
