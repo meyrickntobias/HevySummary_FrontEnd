@@ -1,7 +1,7 @@
 import { Button, Form, FormLabel, Stack } from "react-bootstrap";
-import type { ExerciseTemplate } from "../Api/FetchExercises"
 import { WorkoutActionType, type DayOfWeek, type SavedWorkoutAction } from "../Reducers/SavedWorkoutPlanReducer";
 import { useRef } from "react";
+import type { ExerciseTemplate } from "./AddExerciseModal";
 
 type AddExerciseFormProps = {
     exercise: ExerciseTemplate;
@@ -16,7 +16,6 @@ const AddExerciseForm = ({exercise, currentDay, savedWorkoutDispatch}: AddExerci
         if (!sets) {
             return;
         }
-        console.log(sets);
 
         savedWorkoutDispatch(
             { 

@@ -35,6 +35,7 @@ const PlannerDayCard = ({dayOfWeek, clickAddRoutineHandler, clickAddExerciseHand
 
     const confirmRestDayHandler = () => {
         savedWorkoutDispatch({type: WorkoutActionType.CLEAR_EXERCISES, payload: {day: dayOfWeek}});
+        setIsRestDay(true);
         setShowConfirmRestModal(false);
     }
 
@@ -49,7 +50,7 @@ const PlannerDayCard = ({dayOfWeek, clickAddRoutineHandler, clickAddExerciseHand
         <Card bg="light" className={isRestDay ? "rest-day-bg mb-3" : "mb-3"} data-bs-theme="light" >
             <Card.Header className={isRestDay || !hasExercises ? "border-0" : ""}>
                 <Stack direction="horizontal" gap={5}>
-                    <h4 style={{fontWeight: "200"}}>{dayOfWeek}</h4>
+                    <h4 style={{fontWeight: "300"}}>{dayOfWeek}</h4>
                     <Form.Check style={{float: "right"}} type="switch" label="Rest Day" ref={restDayToggleRef} onClick={() => switchOnClickHandler()} />
                 </Stack>
                 
@@ -79,11 +80,11 @@ const PlannerDayCard = ({dayOfWeek, clickAddRoutineHandler, clickAddExerciseHand
                     )}
                     <Card.Footer className="border-0">
                         <Form>
-                            <Button variant="outline-dark" className="me-2" onClick={() => clickAddExerciseHandler(dayOfWeek)}>
+                            <Button variant="outline-dark" style={{fontSize: "0.8rem"}} className="me-2" onClick={() => clickAddExerciseHandler(dayOfWeek)}>
                                 Add Exercise
                             </Button>
 
-                            <Button variant="outline-dark" onClick={() => clickAddRoutineHandler(dayOfWeek)} className="me-2">
+                            <Button variant="outline-dark" style={{fontSize: "0.8rem"}}onClick={() => clickAddRoutineHandler(dayOfWeek)} className="me-2">
                                 Add Routine (from Hevy)
                             </Button>
                         </Form>

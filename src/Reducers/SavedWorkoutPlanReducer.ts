@@ -14,7 +14,6 @@ export type Routine = {
 }
 
 export type RoutineExercise = {
-    id: string;
     title: string;
     sets: ExerciseSet[];
     primaryMuscleGroup: string;
@@ -122,7 +121,14 @@ export const savedWorkoutReducer = (state: SavedWorkoutPlanState, action: SavedW
 
     switch (action.type) {
         case WorkoutActionType.ADD_ROUTINE:
-            const exercisesInRoutine = action.payload.item.exercises.map(e => ({title: e.title, primaryMuscleGroup: e.primaryMuscleGroup, secondaryMuscleGroups: e.secondaryMuscleGroups, sets: e.sets.length}))
+            const exercisesInRoutine = action.payload.item.exercises.map(e => (
+                {
+                    id: crypto.randomUUID(),
+                    title: e.title, 
+                    primaryMuscleGroup: e.primaryMuscleGroup, 
+                    secondaryMuscleGroups: e.secondaryMuscleGroups, 
+                    sets: e.sets.length
+                }))
             return {
                 ...state,
                 [day]: {

@@ -1,4 +1,4 @@
-import { ListGroup } from "react-bootstrap"
+import { ListGroup, Table } from "react-bootstrap"
 import { useEffect, useState } from "react";
 import type { MuscleGroup } from "../Routes/WorkoutHistory";
 
@@ -37,19 +37,42 @@ const WeeklySummary = ({muscleGroups, onlyShowMuscle} : WeeklySummaryProps) => {
     }, [onlyShowMuscle])
 
     return (
-        <ListGroup as="ol" numbered style={{backgroundColor: "red"}}>
-            {muscleGroups.length > 0 
-            && filteredMuscleGroups.map(muscle => (
-                <ListGroup.Item as="li" className="pb-1 rounded-0" style={{fontSize: "0.9rem"}}> 
-                {formatMuscleGroupTitle(muscle.muscleGroup)}
-                    <div className="ps-4 pt-2" style={{fontSize: "0.8rem"}}>
-                    <span>{muscle.calculatedSets} calculated sets </span>
-                    | <span>{muscle.primarySets} primary sets </span>
-                    | <span>{muscle.secondarySets} secondary sets</span>
-                    </div>
-                </ListGroup.Item>
-            ))}
-        </ListGroup>
+        <>
+            <Table bordered className="m-0 p-0">
+                <colgroup>
+                    <col style={{ width: "50px" }} />
+                    <col style={{ width: "auto" }} />
+                    <col style={{ width: 'auto' }} />
+                    <col style={{ width: 'auto' }} />
+                    <col style={{ width: 'auto' }} />
+                </colgroup>
+                <thead>
+                    <tr style={{borderBottom: "2px solid rgb(230,230,230)"}}>
+                        <th>#</th>
+                        <th>Muscle</th>
+                        <th>Sets</th>
+                        <th>Primary Sets</th>
+                        <th>Secondary Sets</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {muscleGroups.length > 0 
+                    && filteredMuscleGroups.map((muscle, i) => (
+                        <tr>
+                            <td>{i+1}.</td>
+                            <td>{formatMuscleGroupTitle(muscle.muscleGroup)}</td>
+                            <td><b>{muscle.calculatedSets}</b></td>
+                            <td>{muscle.primarySets}</td>
+                            <td>{muscle.secondarySets}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
+        
+            <ListGroup as="ol" numbered>
+                
+            </ListGroup>
+        </>
     )
 }
 

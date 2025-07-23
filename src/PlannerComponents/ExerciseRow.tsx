@@ -1,6 +1,7 @@
 import { CloseButton, Form, Stack } from "react-bootstrap";
 import type { Exercise } from "../Reducers/SavedWorkoutPlanReducer";
 import { useRef } from "react";
+import MuscleGroupBadges from "./MuscleGroupBadges";
 
 type ExerciseCardProps = {
     exercise: Exercise;
@@ -13,7 +14,13 @@ const ExerciseRow = ({exercise, removeFromExercises, updateSets}: ExerciseCardPr
 
     return (
         <tr className="mb-3 rounded-0" style={{lineHeight: "34px"}}>
-            <td className="border-0 ps-3">{exercise.title}</td> 
+            <td className="border-0 ps-3">
+                <span className="me-2">{exercise.title + " "}</span>
+                <MuscleGroupBadges
+                    primaryMuscleGroup={exercise.primaryMuscleGroup} 
+                    secondaryMuscleGroups={exercise.secondaryMuscleGroups} 
+                />
+            </td> 
             <td style={{textAlign: "center"}}>
                 <Stack direction="horizontal">
                     <Form.Control 

@@ -12,7 +12,7 @@ const PlanTable = ({muscleGroupData}: PlanTableProps) => {
         calculatedSets: sets.primarySets + (sets.secondarySets * 0.5)
     })).sort((a, b) => (b.calculatedSets - a.calculatedSets))
 
-    return muscleGroupData.size > 0 ? (
+    return (
         <>
             <Table striped bordered hover>
                 <thead>
@@ -25,7 +25,7 @@ const PlanTable = ({muscleGroupData}: PlanTableProps) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {muscleGroupSets.map((muscleGroup, index) => (
+                    {muscleGroupData.size > 0 && muscleGroupSets.map((muscleGroup, index) => (
                         <tr key={index}>
                             <td>{index + 1}</td>
                             <td>{muscleGroup.muscle}</td>
@@ -38,10 +38,7 @@ const PlanTable = ({muscleGroupData}: PlanTableProps) => {
             </Table>
             <p>* Sets combine primary sets and secondary sets, where secondary sets count as 0.5 sets.</p>
         </>
-    ) : 
-    <>
-        {/* <p>Start adding exercises to see results.</p> */}
-    </>
+    );
 }
 
 export default PlanTable;
