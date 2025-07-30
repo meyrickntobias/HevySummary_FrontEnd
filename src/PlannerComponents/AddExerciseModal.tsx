@@ -31,7 +31,7 @@ const AddExerciseModal = ({isOpen, onHide, currentDay, savedWorkoutDispatch}: Ad
 
     useEffect(() => {
         fetchData();
-    }, [searchKeyword])
+    }, [searchKeyword, fetchData])
 
     const onKeyDownHandler = async (keyword: string | undefined) => {
         if (timeoutId) {
@@ -66,7 +66,10 @@ const AddExerciseModal = ({isOpen, onHide, currentDay, savedWorkoutDispatch}: Ad
             centered
         >
             <Modal.Body>
-                <h4>Exercises</h4>
+                <h4>
+                    Exercises 
+                    {/* <span className="material-symbols-outlined">search</span> */}
+                </h4>
                 <CloseButton 
                     onClick={() => onHideHandler()}
                     style={{position: "absolute", top: "5px", right: "5px"}} 

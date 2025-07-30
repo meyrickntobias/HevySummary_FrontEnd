@@ -13,8 +13,7 @@ const App = () => {
     if (location.pathname === "/") {
       navigate("/history");
     }
-  }, [location]);
-  
+  }, [location, navigate]);
 
   return (
     <>
@@ -22,10 +21,14 @@ const App = () => {
         <h1 className="text-center mb-3 mt-4 site-heading">Hevy Sidekick</h1>
         <Nav variant="underline" className="mb-3 site-heading">
           <Nav.Item>
-            <Nav.Link active={location.pathname == "/history"} className="site-heading" href="/history">History</Nav.Link>
+            <Nav.Link active={location.pathname == "/history"} className="site-heading" href="/history">
+              History
+            </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link active={location.pathname == "/plan"} className="site-heading" href="/plan">Planner</Nav.Link>
+            <Nav.Link active={location.pathname == "/plan"} className="site-heading" href="/plan">
+              Planner
+            </Nav.Link>
           </Nav.Item>
         </Nav>  
 

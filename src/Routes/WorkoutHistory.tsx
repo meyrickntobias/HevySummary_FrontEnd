@@ -26,7 +26,7 @@ const WorkoutHistory = () => {
 
     useEffect(() => {
       fetchData();
-    }, [])
+    }, [fetchData])
 
     return (
       <>
