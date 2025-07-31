@@ -33,6 +33,7 @@ export type Exercise = {
     secondaryMuscleGroups: string[];
 }
 
+/*
 export enum WorkoutActionType {
     ADD_ROUTINE = 'ADD_ROUTINE',
     REMOVE_ROUTINE = 'REMOVE_ROUTINE',
@@ -41,6 +42,17 @@ export enum WorkoutActionType {
     REMOVE_EXERCISE = 'REMOVE_EXERCISE',
     CLEAR_EXERCISES = 'CLEAR_EXERCISES'
 }
+*/
+
+// With this object:
+export const WorkoutActionType = {
+    ADD_ROUTINE: 'ADD_ROUTINE',
+    REMOVE_ROUTINE: 'REMOVE_ROUTINE',
+    ADD_EXERCISE: 'ADD_EXERCISE',
+    MODIFY_EXERCISE_SETS: 'MODIFY_EXERCISE_SETS',
+    REMOVE_EXERCISE: 'REMOVE_EXERCISE',
+    CLEAR_EXERCISES: 'CLEAR_EXERCISES'
+} as const;
 
 export type SavedWorkoutPlanActionPayload = {
     day: DayOfWeek;
@@ -73,27 +85,27 @@ type ClearExercisesActionPayload = {
 }
 
 type AddExerciseAction = {
-    type: WorkoutActionType.ADD_EXERCISE;
+    type: typeof WorkoutActionType.ADD_EXERCISE;
     payload: AddExerciseActionPayload;
 }
 
 type RemoveExerciseAction = {
-    type: WorkoutActionType.REMOVE_EXERCISE;
+    type: typeof WorkoutActionType.REMOVE_EXERCISE;
     payload: RemoveExerciseActionPayload;
 }
 
 type AddRoutineAction = {
-    type: WorkoutActionType.ADD_ROUTINE
+    type: typeof WorkoutActionType.ADD_ROUTINE
     payload: AddRoutineActionPayload;
 }
 
 type ModifyExerciseSetsAction = {
-    type: WorkoutActionType.MODIFY_EXERCISE_SETS;
+    type: typeof WorkoutActionType.MODIFY_EXERCISE_SETS;
     payload: ModifyExerciseSetsActionPayload;
 }
 
 type ClearExercisesAction = {
-    type: WorkoutActionType.CLEAR_EXERCISES;
+    type: typeof WorkoutActionType.CLEAR_EXERCISES;
     payload: ClearExercisesActionPayload;
 }
 
@@ -120,7 +132,7 @@ export const savedWorkoutReducer = (state: SavedWorkoutPlanState, action: SavedW
     const { day } = action.payload;
 
     switch (action.type) {
-        case WorkoutActionType.ADD_ROUTINE:
+        case WorkoutActionType.ADD_ROUTINE: {
             const exercisesInRoutine = action.payload.item.exercises.map(e => (
                 {
                     id: crypto.randomUUID(),
@@ -136,6 +148,7 @@ export const savedWorkoutReducer = (state: SavedWorkoutPlanState, action: SavedW
                     exercises: [...state[day].exercises, ...exercisesInRoutine]
                 }
             };
+        }
         case WorkoutActionType.ADD_EXERCISE:
             console.log(state);
             return {
@@ -145,7 +158,7 @@ export const savedWorkoutReducer = (state: SavedWorkoutPlanState, action: SavedW
                     exercises: [...state[day].exercises, action.payload.item]
                 }
             };
-        case WorkoutActionType.MODIFY_EXERCISE_SETS:
+        case WorkoutActionType.MODIFY_EXERCISE_SETS: {
             const exercises = {
                 ...state,
                 [day]: {
@@ -153,12 +166,13 @@ export const savedWorkoutReducer = (state: SavedWorkoutPlanState, action: SavedW
                     exercises: [...state[day].exercises]
                 }
             }
-            var exerciseToModify = exercises[day].exercises.find(e => e.title === action.payload.title);
+            const exerciseToModify = exercises[day].exercises.find(e => e.title === action.payload.title);
             if (exerciseToModify) {
                 exerciseToModify.sets = action.payload.updatedSets;
             }
             return exercises;
-        case WorkoutActionType.REMOVE_EXERCISE:
+        }
+        case WorkoutActionType.REMOVE_EXERCISE: {
             const currentState = {
                 ...state
             }
@@ -168,6 +182,7 @@ export const savedWorkoutReducer = (state: SavedWorkoutPlanState, action: SavedW
             }
             
             return currentState;
+        }
         case WorkoutActionType.CLEAR_EXERCISES:
             return {
                 ...state,
