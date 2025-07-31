@@ -3,6 +3,7 @@ import MuscleGroupPicker from "../HistoryComponents/MuscleGroupPicker";
 import WeeklySummaryAccordion from "../HistoryComponents/WeeklySummaryAccordion";
 import useFetch from "../Api/useFetch";
 import { Alert, Button, CloseButton } from "react-bootstrap";
+import { apiBaseUrl } from "../Api/constants";
 
 export type WeeklyMuscleGroupSummary = {
   startDate: string,
@@ -21,7 +22,7 @@ export type MuscleGroup = {
 
 const WorkoutHistory = () => {
     const [filteredMuscleRegion, setFilteredMuscleRegion] = useState<string | undefined>();
-    const { fetchData, data, loading, error } = useFetch<WeeklyMuscleGroupSummary[]>("http://localhost:5112/muscle-groups");
+    const { fetchData, data, loading, error } = useFetch<WeeklyMuscleGroupSummary[]>(`${apiBaseUrl}/muscle-groups`);
     const [ showInfoAlert, setShowInfoAlert ] = useState<boolean>(false);
 
     useEffect(() => {

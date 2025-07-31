@@ -3,6 +3,7 @@ import { Alert, Badge, Button, Card, CloseButton, Modal, Table } from "react-boo
 import { formatDateWithMonAndYear } from "../Helpers/DateHelper";
 import { WorkoutActionType, type DayOfWeek, type Routine, type SavedWorkoutAction } from "../Reducers/SavedWorkoutPlanReducer";
 import useFetch from "../Api/useFetch";
+import { apiBaseUrl } from "../Api/constants";
 
 type AddRoutineModalProps = {
     isOpen: boolean;
@@ -12,11 +13,11 @@ type AddRoutineModalProps = {
 }
 
 const AddRoutineModal = ({isOpen, onHide, currentDay, savedWorkoutDispatch}: AddRoutineModalProps) => {
-    const { fetchData, data, loading, error } = useFetch<Routine[]>("http://localhost:5112/routines");
+    const { fetchData, data, loading, error } = useFetch<Routine[]>(`${apiBaseUrl}/routines`);
 
     useEffect(() => {
         fetchData();
-    }, [])
+    }, [fetchData])
 
     return (
         <Modal

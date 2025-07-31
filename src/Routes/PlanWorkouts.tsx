@@ -50,7 +50,7 @@ const PlanWorkouts = () => {
             </Alert>
 
             <Row className="mb-5">
-                <Col sm={6} className="mt-3" style={{width: "50%", display: "inline-block"}}>
+                <Col md={6} sm={12} className="mt-3">
                     {daysOfWeek.map(day => (
                         <PlannerDayCard 
                             key={day}
@@ -62,7 +62,7 @@ const PlanWorkouts = () => {
                         />
                     ))}
                 </Col>
-                <Col sm={6} className="mt-3">
+                <Col md={6} sm={12} className="mt-3">
                     <PlanTable
                         muscleGroupData={setsPerMuscleGroup}
                     />

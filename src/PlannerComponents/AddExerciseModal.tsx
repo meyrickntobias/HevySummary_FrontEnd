@@ -3,6 +3,7 @@ import { Alert, Badge, Card, CloseButton, Col, Form, Modal, Row, Stack } from "r
 import { type DayOfWeek, type SavedWorkoutAction } from "../Reducers/SavedWorkoutPlanReducer";
 import AddExerciseForm from "./AddExerciseForm";
 import useFetch from "../Api/useFetch";
+import { apiBaseUrl } from "../Api/constants";
 
 type AddExerciseModalProps = {
     isOpen: boolean;
@@ -22,7 +23,7 @@ const AddExerciseModal = ({isOpen, onHide, currentDay, savedWorkoutDispatch}: Ad
     const [timeoutId, setTimeoutId] = useState<number | null>(null);
     const [searchKeyword, setSearchKeyword] = useState<string | undefined>();
 
-    const { fetchData, data, error, clearData } = useFetch<ExerciseTemplate[]>(`http://localhost:5112/exercise-templates/search?keyword=${searchKeyword}`);
+    const { fetchData, data, error, clearData } = useFetch<ExerciseTemplate[]>(`${apiBaseUrl}/exercise-templates/search?keyword=${searchKeyword}`);
 
     const onSearchHandler = async (keyword: string | undefined ) => {
         if (!keyword) return;
@@ -91,7 +92,7 @@ const AddExerciseModal = ({isOpen, onHide, currentDay, savedWorkoutDispatch}: Ad
                         <Card key={exercise.id} className="mt-3">
                             <Card.Body>
                                 <Row>
-                                    <Col lg={6} sm={12} style={{fontWeight: "200"}}>
+                                    <Col lg={6} sm={12} style={{fontWeight: "200"}} className="mb-3">
                                         <h6>{exercise.title}</h6>
                                         <Badge pill bg="primary" className="me-1">{exercise.primaryMuscleGroup}</Badge>
                                         {exercise.secondaryMuscleGroups.length > 0 && (
