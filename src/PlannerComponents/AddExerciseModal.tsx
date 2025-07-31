@@ -20,7 +20,7 @@ export type ExerciseTemplate = {
 }
 
 const AddExerciseModal = ({isOpen, onHide, currentDay, savedWorkoutDispatch}: AddExerciseModalProps) => {
-    const [timeoutId, setTimeoutId] = useState<number | null>(null);
+    const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout> | null>(null);
     const [searchKeyword, setSearchKeyword] = useState<string | undefined>();
 
     const { fetchData, data, error, clearData } = useFetch<ExerciseTemplate[]>(`${apiBaseUrl}/exercise-templates/search?keyword=${searchKeyword}`);
